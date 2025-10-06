@@ -1,8 +1,16 @@
-# AI Meal Estimator
+# AI Meal Estimator 
 
 ![CI](https://github.com/seaguent/ai-meal-estimator/actions/workflows/ci.yml/badge.svg)
 
-Web application that uses Google Gemini Vision to estimate nutrition from food images (calories & macronutrients) and provide a short health insight.
+Vision‑AI web application for nutritional inference from food images.
+
+Powered by **Google Gemini Vision**, this project performs multimodal image→text reasoning to estimate calories, macronutrients, and generate concise health insights.
+
+**Architecture:** FastAPI (Python) backend orchestrates inference, validation, and mock mode; React + Vite + Tailwind frontend handles drag‑and‑drop & real‑time camera capture. Deployed on **Render** (API) + **Vercel** (frontend) with GitHub Actions CI and pinned Python runtime for reproducibility.
+
+**Modes:**
+- Real model inference (production)
+- Deterministic mock inference (`USE_MOCK_GEMINI=1`) for local development & onboarding without an API key
 
 ## Live Deployment
 
@@ -21,14 +29,16 @@ If you add a custom domain, list it here and rotate `ALLOWED_ORIGINS` accordingl
 
 ## Current Features
 
-- AI-powered recognition (Gemini Vision)
-- Calorie & macronutrient estimation (scaled by portion multiplier)
-- Health insight text (if model returns it; mocked in mock mode)
-- Camera capture (getUserMedia) or file upload (custom styled input)
-- Deterministic mock mode (`USE_MOCK_GEMINI=1`) for development without a key
-- Single-file FastAPI backend + React (Vite + Tailwind) frontend
-- Typed Pydantic response model with nutrition + confidence + top_k
-- Basic validation (file type, image integrity, size <=10MB, positive portion)
+| Category | Highlights |
+|----------|------------|
+| Inference | Gemini Vision food recognition & confidence + top_k |
+| Nutrition | Portion-scaled macro + calorie estimates |
+| Insights  | Short health recommendation text (mock or real) |
+| UX        | Drag & drop, camera capture, responsive UI |
+| Dev Mode  | Deterministic mock (`USE_MOCK_GEMINI=1`) without API calls |
+| Validation| Image type/size/integrity + positive portion enforcement |
+| Types     | Pydantic response schemas for structured consumption |
+| Deployment| Render (API) + Vercel (frontend), CI with GitHub Actions |
 
 ## Quick Start
 
@@ -146,15 +156,20 @@ Example (mock) response (note field removed):
 
 ## Environment Variables
 
-Backend (`backend/.env`):
+Backend (`backend/.env` dev example):
 ```
 GEMINI_API_KEY=your_real_key
 GEMINI_MODEL=gemini-2.0-flash
 ALLOWED_ORIGINS=http://localhost:5173
 USE_MOCK_GEMINI=0
 ```
-Set `USE_MOCK_GEMINI=1` to run without a real key (returns deterministic mock output).
-In production set `ALLOWED_ORIGINS` to your deployed frontend origin(s), comma-separated.
+Production example:
+```
+GEMINI_API_KEY=prod_key_here
+ALLOWED_ORIGINS=https://ai-meal-estimator.vercel.app
+USE_MOCK_GEMINI=0
+```
+Set `USE_MOCK_GEMINI=1` to run without a real key (returns deterministic mock output). Always **restrict** `ALLOWED_ORIGINS` in production.
 
 Frontend (`frontend-react/.env`):
 ```
@@ -166,16 +181,18 @@ VITE_API_BASE=http://localhost:8000
 Accessibility: The custom styled file input uses a hidden `<input type="file">` and a label surrogate. Add `aria-label="Food image upload"` (or wrap it with visible text) if you further customize for screen readers.
 
 ## Limitations
-- Nutrition values are estimates; not suitable for medical decisions.
-- Model can misidentify visually similar dishes.
-- Portion scaling is a simple multiplier (no density/weight inference).
-- No authentication or rate limiting included by default.
-- Mock mode is deterministic and not representative of real model variability.
+- Estimates only (not medical grade).  
+- Visual ambiguity & plating variance impact accuracy.  
+- Simple linear portion scaling (no volumetric/weight inference).  
+- No auth / rate limiting yet (not hardened for public abuse).  
+- Mock mode ≠ real model variability.
 
 ## Deployment Notes
-- Set `ALLOWED_ORIGINS` (comma-separated) instead of `*` in production.
-- Serve frontend over HTTPS and point `VITE_API_BASE` to the backend origin (or use a reverse proxy to mount API under `/api`).
-- Consider adding a reverse proxy (nginx / caddy) for TLS termination and size limiting.
+- Pin Python via `.python-version` (3.11.x) to avoid wheel build failures.  
+- Set `ALLOWED_ORIGINS` (comma-separated) instead of `*`.  
+- Frontend must be rebuilt if `VITE_API_BASE` changes.  
+- Consider a reverse proxy (nginx/caddy) for TLS, compression, size limiting.  
+- Add rate limiting & logging before opening to broad traffic.
 
 ### Backend Development
 ```bash
@@ -196,12 +213,19 @@ npm run dev
 4. Update this README if needed
 
 ## Security Notes
+- Never commit real `.env` / API keys.  
+- Rotate keys if exposed in terminals, screenshots, or issue text.  
+- Prefer mock mode for demos & onboarding.  
+- Add auth / rate limiting & request logging before scaling.  
+- Log only key tail (already implemented).
 
-- Do not commit `.env` files; supply only `.env.example`.
-- Use mock mode for contributors without a key.
-- Restrict key usage (domain / IP) when deployed.
-- Add auth / rate limiting if exposed publicly.
-- Only key tail is logged.
+## Future Improvements (Backlog)
+- Ingredient segmentation for mixed plates.
+- Optional manual macro override & per-ingredient editing.
+- Rate limiting & API key auth layer.
+- Structured logging + request ID + basic analytics.
+- Dockerfile for portable local + container deploy.
+- Better nutrition normalization via a canonical food database.
 
 ## Troubleshooting
 
