@@ -1,5 +1,7 @@
 # AI Meal Estimator
 
+![CI](https://github.com/seaguent/ai-meal-estimator/actions/workflows/ci.yml/badge.svg)
+
 Web application that uses Google Gemini Vision to estimate nutrition from food images (calories & macronutrients) and provide a short health insight.
 
 ## Live Deployment
