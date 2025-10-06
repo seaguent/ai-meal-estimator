@@ -3,7 +3,8 @@ import io
 from fastapi.testclient import TestClient
 
 os.environ['USE_MOCK_GEMINI'] = '1'
-from backend.main import app  # noqa: E402
+# Running pytest with working directory 'backend/' means 'main.py' is importable as 'main'
+from main import app  # noqa: E402
 
 client = TestClient(app)
 

@@ -4,7 +4,9 @@ from fastapi.testclient import TestClient
 
 # Ensure mock mode before importing app
 os.environ['USE_MOCK_GEMINI'] = '1'
-from backend.main import app  # noqa: E402
+# When pytest is executed with working directory set to backend/, 'main.py' is a top-level module,
+# so we import it directly rather than 'backend.main'.
+from main import app  # noqa: E402
 
 client = TestClient(app)
 
