@@ -1,12 +1,18 @@
 import os
 import io
+import sys
+from pathlib import Path
 from fastapi.testclient import TestClient
 
 # Ensure mock mode before importing app
 os.environ['USE_MOCK_GEMINI'] = '1'
-# When pytest is executed with working directory set to backend/, 'main.py' is a top-level module,
-# so we import it directly rather than 'backend.main'.
-from main import app  # noqa: E402
+
+# Add repo root to sys.path so 'backend' package resolves when running inside backend/ directory
+repo_root = Path(__file__).resolve().parent.parent.parent
+if str(repo_root) not in sys.path:
+    sys.path.insert(0, str(repo_root))
+
+from backend.main import app  # noqa: E402
 
 client = TestClient(app)
 
