@@ -26,7 +26,8 @@ if dotenv_path.exists():
 API_KEY = os.getenv("GEMINI_API_KEY", "").strip().strip('"').strip("'")
 MODEL = os.getenv("GEMINI_MODEL", "gemini-2.0-flash").strip()
 USE_MOCK_GEMINI = os.getenv("USE_MOCK_GEMINI", "0").lower() in {"1", "true", "yes"}
-ALLOWED_ORIGINS = [o.strip() for o in os.getenv("ALLOWED_ORIGINS", "*").split(",") if o.strip()] or ["*"]
+# CORS: default now narrowed to localhost dev; production should set ALLOWED_ORIGINS explicitly
+ALLOWED_ORIGINS = [o.strip() for o in os.getenv("ALLOWED_ORIGINS", "http://localhost:5173").split(",") if o.strip()]
 
 if not API_KEY and not USE_MOCK_GEMINI:
     logger.error("GEMINI_API_KEY not found and mock mode disabled. Create backend/.env with GEMINI_API_KEY=<your_key> or set USE_MOCK_GEMINI=1")

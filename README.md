@@ -133,9 +133,11 @@ Backend (`backend/.env`):
 ```
 GEMINI_API_KEY=your_real_key
 GEMINI_MODEL=gemini-2.0-flash
+ALLOWED_ORIGINS=http://localhost:5173
 USE_MOCK_GEMINI=0
 ```
 Set `USE_MOCK_GEMINI=1` to run without a real key (returns deterministic mock output).
+In production set `ALLOWED_ORIGINS` to your deployed frontend origin(s), comma-separated.
 
 Frontend (`frontend-react/.env`):
 ```
