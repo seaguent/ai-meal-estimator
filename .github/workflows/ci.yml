@@ -21,7 +21,11 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt
+          pip install --no-cache-dir -r requirements.txt --force-reinstall
+      - name: Verify dependencies
+        run: |
+          python -c "import importlib, json; mods=['httpx','fastapi','starlette','pytest'];missing=[m for m in mods if importlib.util.find_spec(m) is None];\
+          import httpx, fastapi, starlette, pytest; print('Missing:', missing); print('Versions:', json.dumps({'httpx': httpx.__version__, 'fastapi': fastapi.__version__, 'starlette': starlette.__version__, 'pytest': pytest.__version__}))"
       - name: Run tests (mock mode)
         env:
           USE_MOCK_GEMINI: '1'
