@@ -2,6 +2,21 @@
 
 Web application that uses Google Gemini Vision to estimate nutrition from food images (calories & macronutrients) and provide a short health insight.
 
+## Live Deployment
+
+Frontend (Vercel): https://ai-meal-estimator.vercel.app  
+Backend (Render base URL): https://ai-meal-estimator.onrender.com  
+API Docs: https://ai-meal-estimator.onrender.com/api/docs  
+Health: https://ai-meal-estimator.onrender.com/health  
+Gemini Health: https://ai-meal-estimator.onrender.com/health/gemini
+
+Frontend is built with Vite; the base API URL is baked at build time from `VITE_API_BASE`. If you later change backend domain:
+1. Update `VITE_API_BASE` in Vercel project settings.
+2. Redeploy frontend.
+3. Update `ALLOWED_ORIGINS` on Render to include the new frontend origin (remove old one when no longer needed).
+
+If you add a custom domain, list it here and rotate `ALLOWED_ORIGINS` accordingly.
+
 ## Current Features
 
 - AI-powered recognition (Gemini Vision)
