@@ -1,0 +1,27 @@
+# Root ignore file
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pyc
+*.env
+.env
+backend/.env
+backend/.venv/
+.venv/
+dist/
+build/
+node_modules/
+*.log
+*.sqlite3
+/.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+
+# Frontend build artifacts
+frontend-react/dist/
