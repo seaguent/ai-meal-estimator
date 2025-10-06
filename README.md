@@ -204,6 +204,11 @@ npm run dev
    - Check browser console for errors
    - Verify the API response format matches frontend expectations
 
+5. **CI fails with `ModuleNotFoundError: No module named 'httpx'`**
+   - Ensure `httpx` (and `pytest` if running tests) is listed in `backend/requirements.txt`
+   - Re-run workflow after pushing the change
+   - FastAPI's TestClient depends on httpx through Starlette
+
 ### Logs
 - Backend logs appear in the terminal where uvicorn is running
 - Frontend logs appear in browser console (F12)
